@@ -46,6 +46,8 @@ class TestScheduleCheckIn(unittest.TestCase):
         )
 
         result = handler.schedule_check_in(self.mock_event, None)
+
+        assert email_mock.called
         assert result == expected
 
     @mock.patch('handler.email.send_confirmation')
@@ -72,7 +74,23 @@ class TestScheduleCheckIn(unittest.TestCase):
         )
 
         result = handler.schedule_check_in(self.mock_event, None)
+
+        assert email_mock.called
         assert result == expected
+
+    @mock.patch('handler.email.send_confirmation')
+    @responses.activate
+    def test_schedule_check_in_without_confirmation_email(self, email_mock):
+        self.mock_event['send_confirmation_email'] = False
+        responses.add(
+            responses.GET,
+            'https://api-extensions.southwest.com/v1/mobile/reservations/record-locator/ABC123',
+            json=util.load_fixture('get_reservation'),
+            status=200
+        )
+
+        result = handler.schedule_check_in(self.mock_event, None)
+        assert not email_mock.called
 
 
 class TestCheckIn(unittest.TestCase):
