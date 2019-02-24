@@ -59,6 +59,7 @@ def schedule_check_in(event, context):
     last_name = event['last_name']
     confirmation_number = event['confirmation_number']
     email_address = event.get('email')
+    send_confirmation = event.get('send_confirmation_email', True)
 
     log.info("Looking up reservation {} for {} {}".format(confirmation_number,
                                                           first_name, last_name))
@@ -77,7 +78,7 @@ def schedule_check_in(event, context):
     }
 
     # Send a confirmation email
-    if email_address:
+    if email_address and send_confirmation:
         try:
             email.send_confirmation(email_address, reservation=reservation)
         except Exception as e:
