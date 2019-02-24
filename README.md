@@ -81,7 +81,7 @@ STEP_FN_INPUT='{
   "confirmation_number": "ABC123",
   "email": "gwb@example.com"
 }'
-STEP_FN_ARN=$(aws --output text stepfunctions list-state-machines --query 'stateMachines[*].stateMachineArn' | grep -E ':sw-check-in$')
+STEP_FN_ARN=$(aws --output text stepfunctions list-state-machines --query 'stateMachines[*].stateMachineArn' | grep -E ':check-in$')
 aws stepfunctions start-execution \
   --state-machine-arn "$STEP_FN_ARN" \
   --input "$STEP_FN_INPUT"
