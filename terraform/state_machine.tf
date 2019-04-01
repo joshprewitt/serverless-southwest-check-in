@@ -25,8 +25,8 @@ resource "aws_sfn_state_machine" "check_in" {
       "Retry": [
         {
           "ErrorEquals": ["SouthwestAPIError"],
-          "IntervalSeconds": 5,
-          "MaxAttempts": 3
+          "IntervalSeconds": 2,
+          "MaxAttempts": 10
         }
       ]
     },
